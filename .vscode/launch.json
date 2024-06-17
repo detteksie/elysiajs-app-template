@@ -1,0 +1,31 @@
+{
+  "configurations": [
+    {
+      "name": "Node.js Attach",
+      "type": "node",
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "port": 9229
+    },
+    {
+      "name": "Node.js Attach by Process ID",
+      "type": "node",
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "processId": "${command:PickProcess}"
+    },
+    {
+      "name": "Docker Attach to Node",
+      "type": "node",
+      "request": "attach",
+      "remoteRoot": "/app"
+    },
+    {
+      "name": "Docker Node.js Launch (not usefull)",
+      "type": "docker",
+      "request": "launch",
+      "preLaunchTask": "docker-run: debug",
+      "platform": "node"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  // !Explorer
+  // Enable and configure file nesting
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": true,
+  "explorer.fileNesting.patterns": {
+    "README.md": "LICENSE",
+    "package.json": "tsconfig.json,tsconfig.build.json,.editorconfig,.gitignore,.dockerignore",
+    "Makefile": "make",
+    ".env": ".env.local,.env.*.local"
+  },
+
+  // Exclude useless files from explorer
+  "files.exclude": {
+    ".husky": true
+  },
+
+  // Typescript
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.preferences.importModuleSpecifier": "shortest"
+}
