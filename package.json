@@ -64,5 +64,7 @@
   "lint-staged": {
     "*.{md,html,css,scss,json,jsonc}": "prettier --write",
     "*.{js,ts}": "eslint --cache --fix"
-  }
+  },
+  "repository": "https://github.com/ssamsara98/elysia-app-template.git",
+  "bugs": "https://github.com/ssamsara98/elysia-app-template/issues"
 }

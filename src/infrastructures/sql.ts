@@ -1,9 +1,9 @@
 import Sequelize from 'sequelize';
 
-import databaseConfig, { DatabaseConfig } from '@/config/database.config';
 import { Comment, commentModel } from '@/models/comment.model';
 import { Post, postModel } from '@/models/post.model';
 import { User, userModel } from '@/models/user.model';
+import databaseConfig, { DatabaseConfig } from '@db/database.config';
 
 const env = Bun.env.NODE_ENV! || 'development';
 const config = databaseConfig[env as keyof DatabaseConfig];
