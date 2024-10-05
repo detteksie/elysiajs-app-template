@@ -1,4 +1,4 @@
-import Sequelize from 'sequelize';
+import sequelize from 'sequelize';
 
 import { Comment, commentModel } from '@/models/comment.model';
 import { Post, postModel } from '@/models/post.model';
@@ -8,9 +8,9 @@ import databaseConfig, { DatabaseConfig } from '@db/database.config';
 const env = Bun.env.NODE_ENV! || 'development';
 const config = databaseConfig[env as keyof DatabaseConfig];
 
-export const sequelize: Sequelize.Sequelize = config.url
-  ? new Sequelize.Sequelize(config.url!, config)
-  : new Sequelize.Sequelize(config.database!, config.username!, config.password, config);
+export const sqlz: sequelize.Sequelize = config.url
+  ? new sequelize.Sequelize(config.url satisfies string, config)
+  : new sequelize.Sequelize(config.database!, config.username!, config.password, config);
 
 export class Models {
   readonly User!: typeof User;
@@ -25,16 +25,16 @@ export class Models {
 }
 
 export const models = new Models(
-  userModel(sequelize, Sequelize.DataTypes),
-  postModel(sequelize, Sequelize.DataTypes),
-  commentModel(sequelize, Sequelize.DataTypes),
+  userModel(sqlz, sequelize.DataTypes),
+  postModel(sqlz, sequelize.DataTypes),
+  commentModel(sqlz, sequelize.DataTypes),
 );
 
 export class Sql extends Models {
-  readonly sequelize!: Sequelize.Sequelize;
-  readonly Sequelize!: typeof Sequelize;
+  readonly sequelize!: sequelize.Sequelize;
+  readonly Sequelize!: typeof sequelize;
 
-  constructor(models: Models, s: Sequelize.Sequelize, S: typeof Sequelize) {
+  constructor(models: Models, s: sequelize.Sequelize, S: typeof sequelize) {
     super(models.User, models.Post, models.Comment);
     this.sequelize = s;
     this.Sequelize = S;
@@ -43,31 +43,28 @@ export class Sql extends Models {
 
   private createAssociation(models: Models) {
     (Object.keys(models) as Array<keyof Models>).forEach((modelName) => {
-      if (!!models[modelName].associate) {
+      if (
+        models[modelName].associate !== undefined &&
+        typeof models[modelName].associate === 'function'
+      ) {
         models[modelName].associate(models);
       }
     });
   }
 
   async authenticate() {
-    const [_, err] = await sequelize
-      .authenticate()
-      .then(() => {
-        console.log('SQL Connection has been established successfully.');
-        return [null, null];
-      })
-      .catch((err: unknown) => {
-        console.error('Unable to connect to the SQL database:', err);
-        return [null, true];
-      });
-
-    if (err) {
+    const [, err] = await safewait(this.sequelize.authenticate());
+    if (err && Bun.env.NODE_ENV! !== 'test') {
+      console.error('Unable to connect to SQL database:', err.message);
+      console.error(err);
       const sto = setTimeout(() => {
         this.authenticate();
         clearTimeout(sto);
       }, 10000);
+      return;
     }
+    console.log('SQL Connection has been established successfully.');
   }
 }
 
-export const sql = new Sql(models, sequelize, Sequelize);
+export const sql = new Sql(models, sqlz, sequelize);

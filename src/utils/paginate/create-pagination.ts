@@ -49,7 +49,7 @@ export function createPaginationObject<T, CustomMetaType extends ObjectLiteral =
           last: hasLastPage
             ? `${route}${symbol}${pageLabel}=${totalPages}&${limitLabel}=${limit}`
             : '',
-        } as IPaginationLinks)
+        } satisfies IPaginationLinks)
       : undefined;
 
   const meta: IPaginationMeta = {
@@ -65,6 +65,6 @@ export function createPaginationObject<T, CustomMetaType extends ObjectLiteral =
   if (metaTransformer)
     return new Pagination<T, CustomMetaType>(items, metaTransformer(meta), links);
 
-  // @ts-ignore
+  // @ts-expect-error nothing
   return new Pagination<T, CustomMetaType>(items, meta, links);
 }

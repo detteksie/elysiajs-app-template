@@ -1,14 +1,13 @@
+/** @type {import('eslint').ESLint.ConfigData} */
 const eslintrc = {
+  root: true,
   parser: '@typescript-eslint/parser',
+  /** @type {import('@typescript-eslint/parser').ParserOptions} */
   parserOptions: {
-    project: 'tsconfig.json',
+    ecmaFeatures: { globalReturn: true },
+    projectService: true,
     tsconfigRootDir: __dirname,
     sourceType: 'module',
-  },
-  root: true,
-  env: {
-    node: true,
-    jest: true,
   },
   ignorePatterns: ['.eslintrc.js'],
   plugins: ['@typescript-eslint', 'prettier', 'import'],
@@ -57,15 +56,18 @@ const eslintrc = {
       },
     ],
 
-    '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/no-unused-vars': 'off',
-    '@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
-    '@typescript-eslint/no-var-requires': 'off',
-    'no-extra-boolean-cast': 'off',
+    '@typescript-eslint/no-empty-object-type': 'warn',
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
   },
   settings: {
     'import/resolver': {
@@ -75,4 +77,5 @@ const eslintrc = {
     },
   },
 };
+
 module.exports = eslintrc;

@@ -1,0 +1,12 @@
+diff --git a/src/index.ts b/src/index.ts
+index f6619e1684fe67a8581a75baea84ea7bc1d43831..62d7265a986c15f4d71f0d10bd28c725b33617a7 100644
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -68,6 +68,7 @@ export function etag(options: ETagOptions = {}) {
+ 						break
+ 				}
+ 
++        // @ts-expect-error nothing
+ 				ctx.response = null
+ 			}
+ 		})

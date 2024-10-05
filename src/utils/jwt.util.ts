@@ -45,7 +45,7 @@ type ContextJwt = Context<
   }
 >;
 
-export const checkBearer = <C extends Context<RouteSchema, any>>(context: C) => {
+export const checkBearer = <C extends Context<RouteSchema>>(context: C) => {
   const c = context as ContextJwt;
 
   if (!c.bearer) {
@@ -56,7 +56,7 @@ export const checkBearer = <C extends Context<RouteSchema, any>>(context: C) => 
   }
 };
 
-export async function getJwtPayload<C extends Context<RouteSchema, any>>(
+export async function getJwtPayload<C extends Context<RouteSchema>>(
   context: C,
   tokenType: 'access' | 'refresh' = 'access',
 ) {

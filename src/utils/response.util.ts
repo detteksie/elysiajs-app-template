@@ -1,4 +1,4 @@
-export interface SuccessJson<T = any> {
+export interface SuccessJson<T = unknown> {
   status: string;
   result: T;
 }

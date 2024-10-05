@@ -1,7 +1,8 @@
 import createHttpError from 'http-errors';
 
 import { Sql, sql } from '@/infrastructures/sql';
-import { IPaginationOptions, paginate } from '@/utils/sequelize-paginate';
+import { IPaginationOptions } from '@/utils/paginate';
+import { sequelizePaginate } from '@/utils/sequelize-paginate';
 
 import { UpdateUserDto } from '../dto/user.dto';
 
@@ -9,7 +10,7 @@ export class UserService {
   constructor(private sql: Sql) {}
 
   async getUserList(options: IPaginationOptions) {
-    const result = await paginate(this.sql.User, options, { where: {} });
+    const result = await sequelizePaginate(this.sql.User, options, { where: {} });
     return result;
   }
 

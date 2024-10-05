@@ -1,7 +1,8 @@
 import createHttpError from 'http-errors';
 
 import { Sql, sql } from '@/infrastructures/sql';
-import { IPaginationOptions, paginate } from '@/utils/sequelize-paginate';
+import { IPaginationOptions } from '@/utils/paginate';
+import { sequelizePaginate } from '@/utils/sequelize-paginate';
 
 import { AddPostCommentDto, CreatePostDto, PublishPostDto, UpdatePostDto } from '../dto/post.dto';
 
@@ -15,7 +16,7 @@ export class PostService {
   }
 
   async getPostList(options: IPaginationOptions) {
-    const posts = await paginate(this.sql.Post, options, {
+    const posts = await sequelizePaginate(this.sql.Post, options, {
       where: { isPublished: true },
       order: [['id', 'DESC']],
     });

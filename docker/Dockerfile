@@ -18,12 +18,14 @@ RUN apt install nodejs -y
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
 FROM env as base
+COPY --link patches patches
 COPY --link package.json bun.lockb ./
 
 # install dependencies into temp directory
 # this will cache them and speed up future builds
 FROM base AS installall
 RUN mkdir -p /temp/dev
+COPY --from=base --link /home/bun/app/patches /temp/dev/patches
 COPY --from=base --link /home/bun/app/package.json /home/bun/app/bun.lockb /temp/dev/
 RUN cd /temp/dev && bun install --frozen-lockfile
 
@@ -45,6 +47,7 @@ RUN bun run build
 # install with --production (exclude devDependencies)
 FROM base AS install
 RUN mkdir -p /temp/prod
+COPY --from=base --link /home/bun/app/patches /temp/prod/patches
 COPY --from=base --link /home/bun/app/package.json /home/bun/app/bun.lockb /temp/prod/
 RUN cd /temp/prod && bun install --frozen-lockfile --production
 
@@ -52,7 +55,6 @@ RUN cd /temp/prod && bun install --frozen-lockfile --production
 FROM node AS release
 COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=install /temp/prod/package.json /temp/prod/bun.lockb ./
-COPY --from=build /home/bun/app/config config
 COPY --from=build /home/bun/app/db db
 COPY --from=build /home/bun/app/dist dist
 COPY --from=build /home/bun/app/tsconfig.json /home/bun/app/.sequelizerc ./

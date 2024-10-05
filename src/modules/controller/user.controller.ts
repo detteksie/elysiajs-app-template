@@ -1,4 +1,4 @@
-import { Logger } from '@bogeychan/elysia-logger/src/types';
+import { Logger } from '@bogeychan/elysia-logger/types';
 import Elysia from 'elysia';
 
 import { USERS } from '@/constants/endpoint-tags.constant';
@@ -35,6 +35,7 @@ export const newUsersController = (userService: UserService) => {
       '/u/:userId',
       async (c) => {
         const result = await userService.getUser(c.params.userId);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ((c as any).log as Logger).debug(result, `u/${c.params.userId}`, 'hahaha');
         return successJson(result);
       },

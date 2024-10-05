@@ -51,7 +51,7 @@ export class AuthService {
       throw this.loginError();
     }
 
-    const passwordMatched = await comparePassword(password, user?.password!);
+    const passwordMatched = await comparePassword(password, user?.password);
     if (!passwordMatched) this.loginError();
 
     return user;

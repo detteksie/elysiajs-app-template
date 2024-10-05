@@ -26,7 +26,8 @@ export function checkPaginationDefault(
 }
 
 // export const getPaginationQuery = (c: Context) => {
-export const getPaginationQuery = (c: any) => {
+export const getPaginationQuery = (c: unknown) => {
+  // @ts-expect-error nothing
   const user = c.get('pagination');
   return user;
 };

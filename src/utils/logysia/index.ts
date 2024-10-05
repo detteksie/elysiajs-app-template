@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ansis from 'ansis';
 import Elysia from 'elysia';
 

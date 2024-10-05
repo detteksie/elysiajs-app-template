@@ -1,1 +1,1 @@
-export const jsonStringify = (obj: any, space: number = 2) => JSON.stringify(obj, null, space);
+export const jsonStringify = (obj: unknown, space: number = 2) => JSON.stringify(obj, null, space);
